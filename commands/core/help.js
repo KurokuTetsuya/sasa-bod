@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-exports.run = async (client, message, args) => {
+exports.exec = async (client, message, args) => {
   if (!args.length) {
     const embed = new MessageEmbed()
       .setAuthor(`${client.user.username}'s Commands List`)

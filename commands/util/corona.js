@@ -58,16 +58,17 @@ exports.exec = async (client, message, args) => {
         )
     );
   }
-};
+}
 
 exports.help = {
   name: "corona",
   description: "Liat statistik corona di indon",
   usage: "{prefix}corona <provinsi>",
   example: "{prefix}corona Jawa Timur"
-};
+}
 
 exports.conf = {
   aliases: ["corontod"],
-  cooldown: 5
-};
+  cooldown: 5,
+  devOnly: false
+}

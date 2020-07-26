@@ -63,9 +63,10 @@ exports.help = {
   description: "Jodohin orang",
   usage: "{prefix}ship <@orang pertama> <@orang kedua>",
   example: "{prefix}ship @rein @rein"
-};
+}
 
 exports.conf = {
   aliases: ["jodohin"],
-  cooldown: 5
-};
+  cooldown: 5,
+  devOnly: false
+}

@@ -18,12 +18,13 @@ exports.help = {
   description: "Ngobrol sama bod sasa",
   usage: "{prefix}talk <text>",
   example: "{prefix}talk Hi there!"
-};
+}
 
 exports.conf = {
   aliases: ["chat", "ngobrol"],
-  cooldown: 5
-};
+  cooldown: 5,
+  devOnly: false
+}
 
 exports.getResponse = async (text, callback) => {
   try {
@@ -65,4 +66,4 @@ exports.getResponse = async (text, callback) => {
     console.log(e);
     callback(6, e.message);
   }
-};
+}

@@ -40,12 +40,13 @@ exports.help = {
   description: "Convert nomer romawi ke angka",
   usage: "{prefix}roman <roman numerical>",
   example: "{prefix}roman MCD"
-};
+}
 
 exports.conf = {
   aliases: ["romawi"],
-  cooldown: 5
-};
+  cooldown: 5,
+  devOnly: false
+}
 
 exports.convertRomanToNumber = async (roman, callback) => {
   try {
@@ -87,4 +88,4 @@ exports.convertRomanToNumber = async (roman, callback) => {
   } catch (e) {
     callback(6, e.mesage);
   }
-};
+}

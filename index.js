@@ -1,9 +1,5 @@
-const {
-  Client,
-  Collection
-} = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const client = new Client();
-const PREFIX = "sasa.";
 const { TOKEN } = process.env;
 const { readdirSync } = require("fs");
 const app = require("express")();
@@ -13,10 +9,12 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
+client.config = require("./config.json");
 client.on("ready", async () => {
   client.commands = new Collection();
   client.aliases = new Collection();
   client.categories = new Collection();
+  client.cooldowns = new Collection();
   const categories = readdirSync("./commands");
   for (const category of categories) {
     const cmds = readdirSync(`./commands/${category}`).filter(f =>
@@ -50,18 +48,43 @@ client.on("message", async message => {
   if (
     !message.guild ||
     message.author.bot ||
-    !message.content.startsWith(PREFIX)
+    !message.content.startsWith(client.config.prefix)
   )
     return;
   const args = message.content
-    .slice(PREFIX.length)
+    .slice(client.config.prefix.length)
     .trim()
     .split(/ +/g);
   const cmd = args[0].toLowerCase();
   args.shift();
   const command =
     client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-  if (!command) return;
+  if (
+    !command ||
+    (command &&
+      command.devOnly &&
+      !client.config.devs.includes(message.author.id))
+  )
+    return;
+  if (!client.cooldowns.has(command.help.name)) {
+    client.cooldowns.set(command.help.name, new Collection());
+  }
+  const now = Date.now();
+  const timestamps = client.cooldowns.get(command.name);
+  const cooldownAmount = (command.conf.cooldown || 3) * 1000;
+
+  if (timestamps.has(message.author.id)) {
+    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+    if (now < expirationTime) {
+      const timeLeft = (expirationTime - now) / 1000;
+      return message.reply(
+        `Tunggu \`${timeLeft.toFixed(1)}\` detik lagi sebelum make \`${
+          command.help.name
+        }\` command lagi. Yang sabar kak!`
+      );
+    }
+  }
   try {
     command.exec(client, message, args);
   } catch (e) {

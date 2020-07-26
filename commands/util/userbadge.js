@@ -99,12 +99,13 @@ exports.help = {
   description: "Liat user list yang punya badge tertentu",
   usage: "{prefix}userbadge <badge>",
   example: "{prefix}userbadge Verified Developer"
-};
+}
 
 exports.conf = {
   aliases: ["ubadge"],
-  cooldown: 5
-};
+  cooldown: 5,
+  devOnly: false
+}
 
 exports.toTitleCase = string => {
   let sentence = string.toLowerCase().split(" ");
@@ -112,7 +113,7 @@ exports.toTitleCase = string => {
     sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
   }
   return sentence.join(" ");
-};
+}
 
 exports.chunk = (array, chunkSize) => {
   const temp = [];
@@ -120,4 +121,4 @@ exports.chunk = (array, chunkSize) => {
     temp.push(array.slice(i, i + chunkSize));
   }
   return temp;
-};
+}

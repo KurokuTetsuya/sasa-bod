@@ -1,6 +1,5 @@
 const { Client, Collection } = require("discord.js");
 const client = new Client();
-const { TOKEN } = process.env;
 const { readdirSync } = require("fs");
 const app = require("express")();
 
@@ -25,8 +24,8 @@ client.on("ready", async () => {
       throw Error(`Couldn't find module.json in ${category} category.`);
       break;
     }
+    module.cmds = [];
     for (const f of cmds) {
-      module.cmds = [];
       const cmd = require(`./commands/${category}/${f}`);
       if (!cmd.exec) return;
       client.commands.set(cmd.help.name, cmd);
@@ -98,4 +97,4 @@ client.on("message", async message => {
   }
 });
 
-client.login(TOKEN).catch(e => process.exit(1));
+client.login(process.env.TOKEN).catch(e => process.exit(1));

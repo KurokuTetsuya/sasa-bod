@@ -105,6 +105,6 @@ dist
 
 # Glitch
 .glitch-assets
-shrinkwrap.yml
+shrinkwrap.yaml
 package-lock.json
 .pki/*

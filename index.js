@@ -70,7 +70,7 @@ client.on("message", async message => {
     client.cooldowns.set(command.help.name, new Collection());
   }
   const now = Date.now();
-  const timestamps = client.cooldowns.get(command.name);
+  const timestamps = client.cooldowns.get(command.help.name);
   const cooldownAmount = (command.conf.cooldown || 3) * 1000;
 
   if (timestamps.has(message.author.id)) {
@@ -78,11 +78,13 @@ client.on("message", async message => {
 
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
-      return message.reply(
-        `Tunggu \`${timeLeft.toFixed(1)}\` detik lagi sebelum make \`${
-          command.help.name
-        }\` command lagi. Yang sabar kak!`
-      );
+      return message
+        .reply(
+          `Tunggu \`${timeLeft.toFixed(1)}\` detik lagi sebelum make \`${
+            command.help.name
+          }\` command lagi. Yang sabar kak!`
+        )
+        .then(m => m.delete({ timeout: 5000 }));
     }
   }
   try {
@@ -93,48 +95,6 @@ client.on("message", async message => {
     console.info(
       `${message.author.tag} [${message.author.id}] used ${cmd} command!`
     );
-  }
-  switch (cmd) {
-    case "elsot":
-      message.channel.send(
-        "https://cdn.discordapp.com/attachments/714479623823556628/726371054951596082/d1837b4d1937ac07671277c572dc61cb.png"
-      );
-      break;
-    case "ping":
-      message.channel.send(`🏓 | Pooooong!!! \`${client.ws.ping}\`ms`);
-      break;
-
-    case "hazmi":
-      message.channel.send("ganteng");
-      break;
-    case "skinker":
-      message.channel.send(
-        ["air wudhu", "wudhu", "wo2"][Math.floor(Math.random() * 3)] || "woodo"
-      );
-      break;
-
-    case "owo":
-      message.channel.send("owok owok owok");
-      break;
-
-    case "fetir":
-      message.channel.send(
-        ["woakwowk", "kata sapa", "gk"][Math.floor(Math.random() * 3)] ||
-          "O aja"
-      );
-      break;
-
-    case "dwi":
-      message.channel.send("bagos");
-      break;
-
-    case "sasa":
-      message.channel.send("kepo ya akwaokwokw");
-      break;
-
-    case "help":
-      message.channel.send("kepo banget ama gue akowkaowk");
-      break;
   }
 });
 
